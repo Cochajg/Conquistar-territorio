@@ -1,13 +1,13 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject blocoPrefab; // Prefab do bloco
     [SerializeField] GameObject jogador1; // Prefab do jogador 1
     [SerializeField] GameObject jogador2; // Prefab do jogador 2
-    [SerializeField] int linhas = 5; // Número de linhas da matriz
-    [SerializeField] int colunas = 5; // Número de colunas da matriz
-    [SerializeField] float espacamento = 1.1f; // Espaçamento entre os blocos
+    [SerializeField] int linhas = 5; // Nï¿½mero de linhas da matriz
+    [SerializeField] int colunas = 5; // Nï¿½mero de colunas da matriz
+    [SerializeField] float espacamento = 1.1f; // Espaï¿½amento entre os blocos
 
     private Bloco[,] grade; // Matriz 2D para armazenar os blocos
     private int territoriosConquistados;
@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
         CriarGrade();
     }
 
-    // Método para criar a matriz de blocos
     void CriarGrade()
     {
         for (int linha = 0; linha < linhas; linha++)
@@ -34,7 +33,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // Posicionar o jogador 1 e jogador 2
         Vector2 posicaoInicialJogador1 = new Vector2((colunas - 1) * espacamento / 2f - espacamento, (linhas - 1) * espacamento / 2f);
         Vector2 posicaoInicialJogador2 = new Vector2((colunas - 1) * espacamento / 2f + espacamento, (linhas - 1) * espacamento / 2f);
         Camera.main.transform.position = new Vector3((colunas - 1) * espacamento / 2f, (linhas - 1) * espacamento / 2f, -10);
@@ -43,19 +41,18 @@ public class GameManager : MonoBehaviour
         Instantiate(jogador2, posicaoInicialJogador2, Quaternion.identity);
     }
 
-    // Método que é chamado quando um território é conquistado
     public void ConquistarTerritorio()
     {
         territoriosConquistados++;
 
-        if(territoriosConquistados == grade.Length)
+        if (territoriosConquistados == grade.Length)
         {
             int jogador1 = 0;
             int jogador2 = 0;
 
-            foreach(Bloco bloco in grade)
+            foreach (Bloco bloco in grade)
             {
-                if(bloco.PegarJogadorDono() == 1)
+                if (bloco.PegarJogadorDono() == 1)
                 {
                     jogador1++;
                 }
@@ -69,7 +66,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Método que finaliza o jogo e declara o vencedor
     void FimDeJogo(int territoriosJogador1, int territoriosJogador2)
     {
         string vencedor;

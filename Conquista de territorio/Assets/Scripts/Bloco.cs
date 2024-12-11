@@ -1,8 +1,9 @@
+using System.Xml.Linq;
 using UnityEngine;
 
-public class Bloco : MonoBehaviour
+public class Bloco : Elemento
 {
-    private bool conquistado = false; // O bloco foi conquistado?
+    private bool conquistado = false;
     private SpriteRenderer spriteRenderer;
     private int jogadorDono;
 
@@ -12,37 +13,33 @@ public class Bloco : MonoBehaviour
         AtualizarCor(Color.white);
     }
 
-    // Método para alterar o estado de conquista do bloco com a cor do jogador
+    // Sobrescrita do m?todo Interagir da classe base Elemento
+    public override void Interagir(GameObject jogador)
+    {
+        Jogador jogadorScript = jogador.GetComponent<Jogador>();
+
+        // Chama o m?todo AlterarConquista para o jogador conquistar o bloco
+        if (!conquistado)
+        {
+            AlterarConquista(jogadorScript.IsJogador1(), jogadorScript.corDoJogador);
+        }
+    }
+
+    // M?todo para alterar o estado de conquista do bloco com a cor do jogador
     public void AlterarConquista(bool jogador1, Color corDoJogador)
     {
         conquistado = true;
         AtualizarCor(corDoJogador);
-
-        // Notifica o GameController que o bloco foi conquistado por um jogador
-        if (jogador1)
-        {
-            jogadorDono = 1;
-            GameManager.instance.ConquistarTerritorio();
-        }
-        else
-        {
-            jogadorDono = 2;
-            GameManager.instance.ConquistarTerritorio();
-        }
+        jogadorDono = jogador1 ? 1 : 2;
+        GameManager.instance.ConquistarTerritorio();
     }
 
-    // Método para verificar se o bloco foi conquistado
-    public bool PegarConquistado()
-    {
-        return conquistado;
-    }
+    // M?todo para verificar se o bloco foi conquistado
+    public bool PegarConquistado() => conquistado;
 
-    public int PegarJogadorDono()
-    {
-        return jogadorDono;
-    }
+    public int PegarJogadorDono() => jogadorDono;
 
-    // Método que muda a cor do bloco dependendo se ele foi conquistado ou não
+    // M?todo que muda a cor do bloco dependendo se ele foi conquistado ou n?o
     private void AtualizarCor(Color novaCor)
     {
         spriteRenderer.color = novaCor;
